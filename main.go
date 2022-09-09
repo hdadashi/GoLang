@@ -9,39 +9,39 @@ import (
 )
 
 // request body template
-type todo struct {
+type Object struct {
 	ID        string `json:"id"`
 	Item      string `json:"item"`
 	Completed bool   `json:"completed"`
 }
 
 // request body
-var todos = []todo{
-	{ID: "1", Item: "Clean Room", Completed: false},
-	{ID: "2", Item: "Read Book", Completed: false},
-	{ID: "3", Item: "Record Video", Completed: true},
+var Objects = []Object{
+	{ID: "1", Item: "TEST Item 1", Completed: false},
+	{ID: "2", Item: "TEST Item 2", Completed: false},
+	{ID: "3", Item: "TEST Item 3", Completed: true},
 }
 
-// make todos a JSON file
-func getTodos(context *gin.Context) {
-	context.IndentedJSON(http.StatusOK, todos)
+// make Objects a JSON file
+func getObjects(context *gin.Context) {
+	context.IndentedJSON(http.StatusOK, Objects)
 }
 
-// make newTodo to JSON file
-func addTodos(context *gin.Context) {
-	var newTodo todo
-	err := context.BindJSON(&newTodo)
+// make newObject to JSON file
+func addObjects(context *gin.Context) {
+	var newObject Object
+	err := context.BindJSON(&newObject)
 	if err != nil {
 		return
 	}
-	todos = append(todos, newTodo)
-	context.IndentedJSON(http.StatusCreated, newTodo)
+	Objects = append(Objects, newObject)
+	context.IndentedJSON(http.StatusCreated, newObject)
 }
 
-func SearchByID(id string) (*todo, error, int) {
-	for i, t := range todos {
+func SearchByID(id string) (*Object, error, int) {
+	for i, t := range Objects {
 		if t.ID == id {
-			return &todos[i], nil, i
+			return &Objects[i], nil, i
 		}
 	}
 	return nil, errors.New("error is not nil"), 0
@@ -49,16 +49,16 @@ func SearchByID(id string) (*todo, error, int) {
 
 func getByID(context *gin.Context) {
 	id := context.Param("id")
-	todo, err, _ := SearchByID(id)
+	Object, err, _ := SearchByID(id)
 	if err != nil {
 		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Record Not Found!"})
 		return
 	}
-	context.IndentedJSON(http.StatusOK, todo)
+	context.IndentedJSON(http.StatusOK, Object)
 }
 
 func patchByID(context *gin.Context) {
-	var patchByID todo
+	var patchByID Object
 	err1 := context.BindJSON(&patchByID)
 	if err1 != nil {
 		return
@@ -83,21 +83,21 @@ func deleteBYID(context *gin.Context) {
 		context.IndentedJSON(http.StatusNotFound, gin.H{"message": "Record Not Found!"})
 		return
 	}
-	if i == len(todos)-1 {
-		todos = todos[:len(todos)-1] //Truncate slice
+	if i == len(Objects)-1 {
+		Objects = Objects[:len(Objects)-1] //Truncate slice
 	} else {
-		todos[i] = todos[len(todos)-1] //Copy last element to index i
-		todos = todos[:len(todos)-1]   //Truncate slice
+		Objects[i] = Objects[len(Objects)-1] //Copy last element to index i
+		Objects = Objects[:len(Objects)-1]   //Truncate slice
 	}
 	context.IndentedJSON(http.StatusOK, gin.H{"message": "Record by ID= " + id + " has been REMOVED!"})
 }
 
 func main() {
 	router := gin.Default()
-	router.GET("/", getTodos)
+	router.GET("/", getObjects)
 	router.GET("/:id", getByID)
 	router.PATCH("/:id", patchByID)
-	router.POST("/", addTodos)
+	router.POST("/", addObjects)
 	router.DELETE("/:id", deleteBYID)
 	router.Run("localhost:8080")
 }
