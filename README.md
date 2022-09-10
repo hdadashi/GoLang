@@ -1,5 +1,5 @@
 # GoLang :: Gin
-CRUD API -> RESTful 
+CRUD API -> REST 
 - POST New Items     -> Create
 - GET List of Items  -> Read
 - GET Items by ID    -> Read
