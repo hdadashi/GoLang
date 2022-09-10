@@ -1,7 +1,7 @@
 # GoLang :: Gin
 CRUD API -> RESTful 
-- POST New Items
-- GET List of Items
-- GET Items by ID
-- PATCH Items by ID
-- DELETE Items by ID
+- POST New Items     -> Create
+- GET List of Items  -> Read
+- GET Items by ID    -> Read
+- PATCH Items by ID  -> Update
+- DELETE Items by ID -> Delete
