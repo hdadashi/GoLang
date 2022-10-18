@@ -15,7 +15,7 @@ type Customer struct {
 }
 
 // stablishing connection to mysql db
-var db, err = sql.Open("mysql", "root:Hossein5252531@tcp(127.0.0.1:3306)/Hossein")
+var db, err = sql.Open("mysql", "root:Hossein@tcp(127.0.0.1:3306)/Hossein")
 
 func selectQuery(id int) error {
 	results, err := db.Query("SELECT * FROM customers WHERE id = ? and pcode > ?", id, 4)
